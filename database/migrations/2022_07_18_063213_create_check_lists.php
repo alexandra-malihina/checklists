@@ -17,6 +17,7 @@ class CreateCheckLists extends Migration
 			$table->id();
 			$table->string('name', 150)->comment('Наименование списка');
 			$table->unsignedBigInteger('user_id');
+			$table->tinyInteger('is_done')->default(0)->comment('Выполнен ли чек-лист');
 			$table->timestamps();
 
 			$table->foreign('user_id')

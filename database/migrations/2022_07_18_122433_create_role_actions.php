@@ -13,7 +13,7 @@ class CreateRoleActions extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('role_actions', function (Blueprint $table) {
+		Schema::create('role_action', function (Blueprint $table) {
 			$table->id();
 			$table->unsignedBigInteger('role_id');
 			$table->unsignedBigInteger('action_id');
@@ -47,6 +47,6 @@ class CreateRoleActions extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('role_actions');
+		Schema::dropIfExists('role_action');
 	}
 }

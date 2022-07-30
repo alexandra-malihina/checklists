@@ -13,7 +13,7 @@ class CreateUserActions extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('user_actions', function (Blueprint $table) {
+		Schema::create('user_action', function (Blueprint $table) {
 			$table->id();
 			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('action_id');
@@ -48,6 +48,6 @@ class CreateUserActions extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('user_actions');
+		Schema::dropIfExists('user_action');
 	}
 }

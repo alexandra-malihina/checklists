@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ActionModel;
+use App\Models\Action;
 use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
@@ -34,7 +34,7 @@ class ActionSeeder extends Seeder
 		];
 
 		foreach ( $actions as $action) {
-			ActionModel::query()
+			Action::query()
 			->updateOrCreate($action);
 		}
     }

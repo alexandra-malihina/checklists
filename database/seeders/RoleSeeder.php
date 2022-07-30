@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ActionModel;
-use App\Models\EntityModel;
-use App\Models\RoleActionModel;
-use App\Models\RoleModel;
+use App\Models\Action;
+use App\Models\Entity;
+use App\Models\RoleAction;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -26,12 +26,12 @@ class RoleSeeder extends Seeder
 
 		$all_roles = [];
 		foreach ( $roles as $role) {
-			$all_roles[] = RoleModel::query()
+			$all_roles[] = Role::query()
 			->updateOrCreate($role)->id;
 		}
 
-		$all_actions = ActionModel::all()->modelKeys();
-		$all_entities = EntityModel::all()->modelKeys();
+		$all_actions = Action::all()->modelKeys();
+		$all_entities = Entity::all()->modelKeys();
 
 		// $role_actions = [];
 
@@ -44,7 +44,7 @@ class RoleSeeder extends Seeder
 						'action_id' => $action,
 						'entity_id'=> $entity
 					];
-					RoleActionModel::query()
+					RoleAction::query()
 					->updateOrCreate($role_action);
 				}
 			}

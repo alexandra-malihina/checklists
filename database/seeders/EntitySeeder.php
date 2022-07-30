@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\EntityModel;
+use App\Models\Entity;
 use Illuminate\Database\Seeder;
 
 class EntitySeeder extends Seeder
@@ -26,7 +26,7 @@ class EntitySeeder extends Seeder
 		];
 
 		foreach ( $entities as $entity) {
-			EntityModel::query()
+			Entity::query()
 			->updateOrCreate($entity);
 		}
     }

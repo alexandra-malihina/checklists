@@ -28,7 +28,7 @@ class AddColumnsChecklistsInfoToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_blocked');
+            $table->dropColumn('active');
             $table->dropColumn('max_check_lists_count');
             $table->dropColumn('current_check_lists_count');
         });
