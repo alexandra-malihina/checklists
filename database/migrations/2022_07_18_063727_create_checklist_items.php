@@ -15,7 +15,6 @@ class CreateChecklistItems extends Migration
 	{
 		Schema::create('checklist_items', function (Blueprint $table) {
 			$table->id();
-			$table->integer('item_number')->comment('Номер пункта списка');
 			$table->string('name', 255)->comment('Наименование пункта');
 			$table->tinyInteger('is_done')->default(0)->comment('Выполнен ли пункт из списка');
 			$table->unsignedBigInteger('check_list_id');

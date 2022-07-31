@@ -14,4 +14,8 @@ class CheckListItem extends Model
 		'is_done',
 		'check_list_id'
 	];
+
+	public function checkList() {
+		return $this->belongsTo(CheckList::class);
+	}
 }

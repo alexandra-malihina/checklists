@@ -20,10 +20,10 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	});
-	Route::resource('check-lists', CheckListController::class, [
-		'store', 'edit', 'destroy', 'index'
+	Route::resource('check-lists', CheckListController::class)->only([
+		'store', 'update', 'destroy', 'index'
 	]);
-	Route::resource('check-lists.items', CheckListItemController::class, [
-		'store', 'edit', 'destroy', 'index'
+	Route::resource('check-lists.items', CheckListItemController::class)->only([
+		'store', 'update', 'destroy', 'index'
 	]);
 });

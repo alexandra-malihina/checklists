@@ -5274,7 +5274,8 @@ __webpack_require__.r(__webpack_exports__);
       is_loading: false,
       is_error: false,
       message: null,
-      set_new_message: false
+      set_new_message: false,
+      message_count: 0
     };
   },
   // emits: ['setUser'],
@@ -5282,12 +5283,10 @@ __webpack_require__.r(__webpack_exports__);
     onSetUser: function onSetUser() {
       var _this = this;
 
-      this.setLoading(true);
+      // this.setLoading(true)
       axios.get("/api/user").then(function (res) {
         // console.log(res);
-        _this.user = res.data;
-
-        _this.setLoading(false);
+        _this.user = res.data; // this.setLoading(false)
       });
     },
     setLoading: function setLoading(is_loading) {
@@ -5301,8 +5300,13 @@ __webpack_require__.r(__webpack_exports__);
 
       this.error = error;
       this.message = message;
+      this.message_count++;
       setTimeout(function () {
-        _this2.setMessage(null, false);
+        _this2.message_count--;
+
+        if (!_this2.message_count) {
+          _this2.setMessage(null, false);
+        }
       }, 3000);
     }
   },

@@ -112,8 +112,28 @@ class CheckListController extends Controller
      * @param  \App\Models\CheckListModel  $checkListModel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CheckList $checkListModel)
+    public function destroy(CheckList $checkList, Request $request)
     {
-        //
+        $user = $request->user();
+		$return_data = [
+			'error' => false,
+			'message' => 'Чек-лист успешно удален!',
+			'data' => []
+		];
+
+		if ($checkList->user_id !== $user->id) {
+			$return_data = [
+				'error' => true,
+				'message' => 'Вы можете удалять только собственные чек-листы!',
+				'data' => []
+			];
+		}
+		else {
+			$checkList->delete();
+		}
+
+		$user->current_check_lists_count--;
+		$user->save();
+		return $return_data;
     }
 }

@@ -19,17 +19,18 @@ export default {
 			is_loading: false,
 			is_error: false,
 			message: null, 
-			set_new_message: false
+			set_new_message: false,
+			message_count: 0
         };
     },
 	// emits: ['setUser'],
     methods: {
         onSetUser() {
-			this.setLoading(true)
+			// this.setLoading(true)
             axios.get("/api/user").then((res) => {
                 // console.log(res);
                 this.user = res.data
-				this.setLoading(false)
+				// this.setLoading(false)
             });
         },
 		setLoading(is_loading) {
@@ -41,9 +42,13 @@ export default {
 		setMessage(message, error) {
 			this.error = error
 			this.message = message
+			this.message_count++;
 
 			setTimeout( () => {
-				this.setMessage(null, false)
+				this.message_count--;
+				if (! this.message_count) {
+					this.setMessage(null, false)
+				}
 			}, 3000)
 		}
     },
