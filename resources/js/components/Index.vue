@@ -53,7 +53,10 @@ export default {
 		}
     },
 	mounted() {
-		this.onSetUser()
+		console.log(this.$route.name)
+		if (this.$route.name !== "user.login" && this.$route.name !== "user.register") {
+			this.onSetUser()
+		}
 	}
 };
 </script>

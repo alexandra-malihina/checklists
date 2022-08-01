@@ -6,7 +6,7 @@
             <div
                 class="row col col-12 col-md-6 mb-3 mx-auto"
                 v-if="
-                    checklists.length < user.max_check_lists_count && user
+                   user && user.max_check_lists_count && checklists.length < user.max_check_lists_count
                 "
             >
                 <label>Новый чек-лист</label>

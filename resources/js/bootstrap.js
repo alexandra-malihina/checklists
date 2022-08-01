@@ -26,6 +26,10 @@ window.axios.interceptors.response.use({}, err => {
 			name: 'user.login'
 		})
 	}
+
+	if (err.response.status === 422) {
+		throw err; 
+	}
 })
 
 /**

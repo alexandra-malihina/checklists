@@ -5311,7 +5311,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.onSetUser();
+    console.log(this.$route.name);
+
+    if (this.$route.name !== "user.login" && this.$route.name !== "user.register") {
+      this.onSetUser();
+    }
   }
 });
 
@@ -5333,10 +5337,32 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      errors: {
+        email: 1,
+        password: 1
+      }
     };
   },
   methods: {
+    checkPasswordInput: function checkPasswordInput() {
+      this.password = this.password.trimLeft();
+
+      if (this.password.length === 0) {
+        this.errors.password = 1;
+      } else {
+        this.errors.password = 0;
+      }
+    },
+    checkEmailInput: function checkEmailInput() {
+      this.email = this.email.trimLeft();
+
+      if (this.email.length === 0) {
+        this.errors.email = 1;
+      } else {
+        this.errors.email = 0;
+      }
+    },
     login: function login() {
       var _this = this;
 
@@ -5352,6 +5378,22 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push({
             name: 'checklists'
           });
+        })["catch"](function (e) {
+          var data = e.response.data;
+          console.log(data);
+          var message = '';
+
+          if (data.errors.email) {
+            _this.errors.email = 1;
+            message += data.errors.email;
+          }
+
+          if (data.errors.password) {
+            _this.errors.password = 1;
+            message += data.errors.password;
+          }
+
+          _this.$emit('set-message', message, true);
         });
       });
     }
@@ -5421,7 +5463,7 @@ var render = function render() {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "bg-white border p-5 mx-auto my-5 col-12 col-md-6 rounded"
+    staticClass: "bg-white border p-5 mx-auto my-5 col-12 col-md-6 col-lg-4 rounded"
   }, [_c("label", [_vm._v("Email")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
@@ -5430,6 +5472,9 @@ var render = function render() {
       expression: "email"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.email
+    },
     attrs: {
       type: "email",
       name: "email",
@@ -5439,10 +5484,10 @@ var render = function render() {
       value: _vm.email
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.email = $event.target.value;
-      }
+      }, _vm.checkEmailInput]
     }
   }), _vm._v(" "), _c("label", [_vm._v("Пароль")]), _vm._v(" "), _c("input", {
     directives: [{
@@ -5452,6 +5497,9 @@ var render = function render() {
       expression: "password"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.password
+    },
     attrs: {
       type: "password",
       name: "password",
@@ -5461,13 +5509,16 @@ var render = function render() {
       value: _vm.password
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.password = $event.target.value;
-      }
+      }, _vm.checkPasswordInput]
     }
   }), _vm._v(" "), _c("input", {
     staticClass: "btn btn-primary mb-3",
+    "class": {
+      disabled: _vm.password.length === 0 || _vm.email.length === 0
+    },
     attrs: {
       type: "submit",
       value: "Войти"
@@ -5555,6 +5606,10 @@ window.axios.interceptors.response.use({}, function (err) {
     router.push({
       name: 'user.login'
     });
+  }
+
+  if (err.response.status === 422) {
+    throw err;
   }
 });
 /**

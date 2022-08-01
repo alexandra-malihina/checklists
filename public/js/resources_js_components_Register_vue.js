@@ -18,10 +18,50 @@ __webpack_require__.r(__webpack_exports__);
       name: "",
       password_confirmation: "",
       email: "",
-      password: ""
+      password: "",
+      errors: {
+        email: 1,
+        name: 1,
+        password: 1,
+        password_confirmation: 1
+      }
     };
   },
   methods: {
+    checkEmailInput: function checkEmailInput() {
+      this.email = this.email.trimLeft();
+      this.errors.email = 0;
+
+      if (this.email.length === 0) {
+        this.errors.email = 1;
+      }
+    },
+    checkNameInput: function checkNameInput() {
+      this.name = this.name.trimLeft();
+      this.errors.name = 0;
+
+      if (this.name.length === 0) {
+        this.errors.name = 1;
+      }
+    },
+    checkPasswordInput: function checkPasswordInput() {
+      this.password = this.password.trimLeft();
+      this.password_confirmation = this.password_confirmation.trimLeft();
+      this.errors.password = 0;
+      this.errors.password_confirmation = 0;
+
+      if (this.password.length === 0) {
+        this.errors.password = 1;
+      }
+
+      if (this.password_confirmation.length === 0) {
+        this.errors.password_confirmation = 1;
+      }
+
+      if (this.password_confirmation !== this.password) {
+        this.errors.password_confirmation = 1;
+      }
+    },
     register: function register() {
       var _this = this;
 
@@ -38,6 +78,23 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push({
             name: "checklists"
           });
+        })["catch"](function (e) {
+          var data = e.response.data;
+          console.log(data);
+          var message = '';
+
+          if (data.errors.email) {
+            _this.errors.email = 1;
+            message += data.errors.email + ' ';
+          }
+
+          if (data.errors.password) {
+            _this.errors.password = 1;
+            _this.errors.password_confirmation = 1;
+            message += data.errors.password;
+          }
+
+          _this.$emit('set-message', message, true);
         });
       });
     }
@@ -62,7 +119,7 @@ var render = function render() {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "bg-white mx-auto my-5 border p-5 col-12 col-md-6 rounded"
+    staticClass: "bg-white mx-auto my-5 border p-5 col-12 col-md-6 col-lg-4 rounded"
   }, [_c("label", [_vm._v("Имя")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
@@ -71,6 +128,9 @@ var render = function render() {
       expression: "name"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.name
+    },
     attrs: {
       type: "text",
       name: "name",
@@ -80,10 +140,10 @@ var render = function render() {
       value: _vm.name
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.name = $event.target.value;
-      }
+      }, _vm.checkNameInput]
     }
   }), _vm._v(" "), _c("label", [_vm._v("Email")]), _vm._v(" "), _c("input", {
     directives: [{
@@ -93,6 +153,9 @@ var render = function render() {
       expression: "email"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.email
+    },
     attrs: {
       type: "email",
       name: "email",
@@ -102,10 +165,10 @@ var render = function render() {
       value: _vm.email
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.email = $event.target.value;
-      }
+      }, _vm.checkEmailInput]
     }
   }), _vm._v(" "), _c("label", [_vm._v("Пароль")]), _vm._v(" "), _c("input", {
     directives: [{
@@ -115,6 +178,9 @@ var render = function render() {
       expression: "password"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.password
+    },
     attrs: {
       type: "password",
       name: "password",
@@ -124,10 +190,10 @@ var render = function render() {
       value: _vm.password
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.password = $event.target.value;
-      }
+      }, _vm.checkPasswordInput]
     }
   }), _vm._v(" "), _c("label", [_vm._v("Повторите пароль")]), _vm._v(" "), _c("input", {
     directives: [{
@@ -137,6 +203,9 @@ var render = function render() {
       expression: "password_confirmation"
     }],
     staticClass: "form-control mb-3",
+    "class": {
+      "is-invalid": _vm.errors.password_confirmation
+    },
     attrs: {
       type: "password",
       name: "password_confirmation",
@@ -146,13 +215,16 @@ var render = function render() {
       value: _vm.password_confirmation
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.password_confirmation = $event.target.value;
-      }
+      }, _vm.checkPasswordInput]
     }
   }), _vm._v(" "), _c("input", {
     staticClass: "btn btn-primary mb-3",
+    "class": {
+      disabled: _vm.errors.name || _vm.errors.email || _vm.errors.password || _vm.errors.password_confirmation
+    },
     attrs: {
       type: "submit",
       value: "Зарегистрироваться"
@@ -163,7 +235,7 @@ var render = function render() {
         return _vm.register.apply(null, arguments);
       }
     }
-  }), _vm._v(" "), _c("p", [_vm._v("\n        Есть учетная запись?\n        "), _c("router-link", {
+  }), _vm._v(" "), _c("p", [_vm._v("\n            Есть учетная запись?\n            "), _c("router-link", {
     attrs: {
       to: {
         name: "user.login"

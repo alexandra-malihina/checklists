@@ -315,7 +315,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "container my-5 bg-white p-3"
-  }, [_vm.checklists.length < _vm.user.max_check_lists_count && _vm.user ? _c("div", {
+  }, [_vm.user && _vm.user.max_check_lists_count && _vm.checklists.length < _vm.user.max_check_lists_count ? _c("div", {
     staticClass: "row col col-12 col-md-6 mb-3 mx-auto"
   }, [_c("label", [_vm._v("Новый чек-лист")]), _vm._v(" "), _c("div", {
     staticClass: "form-group input-group"
