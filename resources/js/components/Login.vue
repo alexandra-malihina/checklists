@@ -86,5 +86,8 @@ export default {
             });
         },
     },
+	mounted() {
+		this.$emit("set-loading", false);
+	}
 };
 </script>

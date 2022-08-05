@@ -2,7 +2,10 @@
     <nav class="navbar bg-white">
         <div class="container-fluid me-auto">
             <a class="navbar-brand" href="/">CheckLists</a>
-            <div class="d-flex">
+            <div class="d-flex my-auto align-items-baseline" v-if="user">
+				<router-link class="btn btn-primary mx-2" v-if="( user.admin && user)" :to="{name: 'admin'}">
+					Админка
+				</router-link>
                 {{ user.name }}
                 <a href="#" @click.prevent="logout" class="small mx-2">Выйти</a>
             </div>
@@ -21,5 +24,8 @@ export default {
             });
         },
     },
+	mounted() {
+		// console.log(user)
+	}
 };
 </script>

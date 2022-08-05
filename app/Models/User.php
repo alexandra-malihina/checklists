@@ -42,13 +42,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-	protected $with = ['roles'];
+	// protected $with = ['actions.entity', 'actions.action'];
 	/**
 	 * Связь с ролями пользователя
 	 */
-	public function roles() {
-		return $this->belongsToMany(
-			Role::class
+	public function actions() {
+		return $this->hasMany(
+			UserAction::class
 		);
 	}
+
+	// public function hasRole($role) {
+	// 	return $this->belongsToMany(
+	// 		Role::class
+	// 	)->where('code', $role)->first();
+	// }
 }

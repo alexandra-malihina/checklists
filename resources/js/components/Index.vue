@@ -28,10 +28,15 @@ export default {
         onSetUser() {
 			// this.setLoading(true)
             axios.get("/api/user").then((res) => {
-                // console.log(res);
-                this.user = res.data
+                console.log(res.data.data);
+                this.user = res.data.data
 				// this.setLoading(false)
             });
+			//             axios.post("/admin").then((res) => {
+            //     // console.log(res);
+            //     // this.user = res.data
+			// 	// this.setLoading(false)
+            // });
         },
 		setLoading(is_loading) {
 			this.is_loading = is_loading;

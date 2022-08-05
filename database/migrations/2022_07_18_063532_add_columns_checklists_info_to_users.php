@@ -15,6 +15,7 @@ class AddColumnsChecklistsInfoToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('active')->default(1)->comment('Заблокирован ли пользователь');
+            $table->tinyInteger('admin')->default(0)->comment('Является администратором');
 			$table->integer('max_check_lists_count')->default(5)->comment('Максимальное разрешенное кол-во списков');
 			$table->integer('current_check_lists_count')->default(0)->comment('Текущее кол-во списков');
         });
@@ -29,6 +30,7 @@ class AddColumnsChecklistsInfoToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('active');
+            $table->dropColumn('admin');
             $table->dropColumn('max_check_lists_count');
             $table->dropColumn('current_check_lists_count');
         });

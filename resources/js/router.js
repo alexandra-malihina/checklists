@@ -7,7 +7,8 @@ Vue.use(VueRouter)
 
 const router =  new VueRouter({
 	mode: 'history',
-
+	linkActiveClass: "active",
+	linkExactActiveClass: "exact-active",
 	routes: [
 		{
 			path: '/',
@@ -23,6 +24,27 @@ const router =  new VueRouter({
 			path: '/register',
 			name: 'user.register',
 			component: () => import('./components/Register.vue')
+		},
+		{
+			path: '/admin',
+			name: 'admin',
+			component: () => import('./components/Admin.vue'),
+			children: [
+				{
+					path: '/admin/users',
+					name: 'users',
+					component: () => import('./components/admin/Users.vue')
+				},
+				{
+					path: '/admin/roles',
+					name: 'roles',
+					component: () => import('./components/admin/Roles.vue')
+				}
+			]
+		},
+		{
+			path: '*',
+			redirect: '/'
 		}
 	]
 })

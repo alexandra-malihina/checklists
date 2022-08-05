@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,6 +27,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+
+		Gate::define('edit-users', function (User $user) {
+			// $check = DB::table('entities as e')
+			// ->join(' ')
+			// return $user->id === $post->user_id;
+		});
     }
 }

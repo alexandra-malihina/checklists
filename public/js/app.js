@@ -5285,9 +5285,13 @@ __webpack_require__.r(__webpack_exports__);
 
       // this.setLoading(true)
       axios.get("/api/user").then(function (res) {
-        // console.log(res);
-        _this.user = res.data; // this.setLoading(false)
-      });
+        console.log(res.data.data);
+        _this.user = res.data.data; // this.setLoading(false)
+      }); //             axios.post("/admin").then((res) => {
+      //     // console.log(res);
+      //     // this.user = res.data
+      // 	// this.setLoading(false)
+      // });
     },
     setLoading: function setLoading(is_loading) {
       this.is_loading = is_loading;
@@ -5397,6 +5401,9 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
+  },
+  mounted: function mounted() {
+    this.$emit("set-loading", false);
   }
 });
 
@@ -5596,6 +5603,12 @@ window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.withCredentials = true;
 window.axios.interceptors.response.use({}, function (err) {
+  if (err.response.status === 403) {
+    router.push({
+      name: 'checklists'
+    });
+  }
+
   if (err.response.status === 401 || err.response.status === 419) {
     var token = localStorage.getItem('x_xsrf_token');
 
@@ -5648,6 +5661,8 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
+  linkActiveClass: "active",
+  linkExactActiveClass: "exact-active",
   routes: [{
     path: '/',
     component: function component() {
@@ -5664,6 +5679,28 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_components_Register_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Register.vue */ "./resources/js/components/Register.vue"));
     }
+  }, {
+    path: '/admin',
+    name: 'admin',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_components_Admin_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Admin.vue */ "./resources/js/components/Admin.vue"));
+    },
+    children: [{
+      path: '/admin/users',
+      name: 'users',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ "resources_js_components_admin_Users_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/admin/Users.vue */ "./resources/js/components/admin/Users.vue"));
+      }
+    }, {
+      path: '/admin/roles',
+      name: 'roles',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ "resources_js_components_admin_Roles_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/admin/Roles.vue */ "./resources/js/components/admin/Roles.vue"));
+      }
+    }]
+  }, {
+    path: '*',
+    redirect: '/'
   }]
 });
 router.beforeEach(function (to, from, next) {
@@ -43742,7 +43779,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBun
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_CheckLists_vue":1,"resources_js_components_Register_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_CheckLists_vue":1,"resources_js_components_Register_vue":1,"resources_js_components_Admin_vue":1,"resources_js_components_admin_Users_vue":1,"resources_js_components_admin_Roles_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

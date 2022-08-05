@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
+use App\Models\Action;
+use App\Models\Entity;
 use App\Models\RoleUser;
 use App\Models\User;
+use App\Models\UserAction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,15 +26,23 @@ class FirstUserSeeder extends Seeder
 			],
 			[
 				'email' => 'admin@mail.ru',
-				'password' => Hash::make('123123123')
+				'password' => Hash::make('123123123'),
+				'admin' => 1
 			]
 		);
-		$admin_role = Role::where('code', 'admin')->first();
-
-		RoleUser::query()
-		->updateOrCreate([
-			'user_id' => $first_user->id,
-			'role_id' => $admin_role->id
-		]);
+		$all_actions = Action::get();
+		$all_entities = Entity::get();
+		
+		foreach ($all_entities as $entity) {
+			foreach  ($all_actions as $action) {
+				UserAction::updateOrCreate(
+					[
+						'user_id' => $first_user->id,
+						'action_id' => $action->id,
+						'entity_id' => $entity->id
+					]
+					);
+			}
+		}
     }
 }

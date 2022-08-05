@@ -18,7 +18,6 @@ class CreateUserActions extends Migration
 			$table->unsignedBigInteger('user_id');
 			$table->unsignedBigInteger('action_id');
 			$table->unsignedBigInteger('entity_id');
-			$table->tinyInteger('is_active')->comment('Включена или выключена опция');
 
 			$table->foreign('user_id')
 				->references('id')

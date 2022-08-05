@@ -46,7 +46,6 @@ class BuildProject extends Command
 
 		$this->call('db:seed', ['--class' => 'ActionSeeder']);
 		$this->call('db:seed', ['--class' => 'EntitySeeder']);
-		$this->call('db:seed', ['--class' => 'RoleSeeder']);
 		$this->call('db:seed', ['--class' => 'FirstUserSeeder']);
 
 

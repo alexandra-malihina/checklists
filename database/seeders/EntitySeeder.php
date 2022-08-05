@@ -22,6 +22,10 @@ class EntitySeeder extends Seeder
 			[
 				'name' => 'Списки',
 				'code' => 'check_lists'
+			],
+			[
+				'name' => 'Пользовательские права',
+				'code' => 'roles'
 			]
 		];
 

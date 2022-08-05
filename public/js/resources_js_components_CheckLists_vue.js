@@ -289,6 +289,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
+  },
+  mounted: function mounted() {// console.log(user)
   }
 });
 
@@ -599,9 +601,16 @@ var render = function render() {
     attrs: {
       href: "/"
     }
-  }, [_vm._v("CheckLists")]), _vm._v(" "), _c("div", {
-    staticClass: "d-flex"
-  }, [_vm._v("\n            " + _vm._s(_vm.user.name) + "\n            "), _c("a", {
+  }, [_vm._v("CheckLists")]), _vm._v(" "), _vm.user ? _c("div", {
+    staticClass: "d-flex my-auto align-items-baseline"
+  }, [_vm.user.admin && _vm.user ? _c("router-link", {
+    staticClass: "btn btn-primary mx-2",
+    attrs: {
+      to: {
+        name: "admin"
+      }
+    }
+  }, [_vm._v("\n\t\t\t\t\tАдминка\n\t\t\t\t")]) : _vm._e(), _vm._v("\n                " + _vm._s(_vm.user.name) + "\n                "), _c("a", {
     staticClass: "small mx-2",
     attrs: {
       href: "#"
@@ -612,7 +621,7 @@ var render = function render() {
         return _vm.logout.apply(null, arguments);
       }
     }
-  }, [_vm._v("Выйти")])])])]);
+  }, [_vm._v("Выйти")])], 1) : _vm._e()])]);
 };
 
 var staticRenderFns = [];
