@@ -67,8 +67,7 @@ class CheckListItemController extends Controller
 
 		$new_checkist_item = CheckListItem::create([
 			'name' => $request->name,
-			'check_list_id' => $request->check_list,
-			'item_number' => (CheckListItem::where('check_list_id', $request->check_list)->orderBy('item_number', 'desc')->first()->item_number ?? 0 ) + 1
+			'check_list_id' => $request->check_list
 		]);
 
 		$check_list->is_done = 0;

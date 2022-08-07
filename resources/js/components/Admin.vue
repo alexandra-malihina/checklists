@@ -26,7 +26,7 @@
                     </router-link>
                 </li>
             </ul>
-            <div class="col col-7 p-3 ms-2">
+            <div class="col col-9 p-3 ms-2">
                 <router-view
                     @set-loading="setLoading"
                     @set-message="setMessage"

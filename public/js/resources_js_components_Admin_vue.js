@@ -125,7 +125,7 @@ var render = function render() {
       }
     }
   }, [_vm._v("\n                    Управление правами\n                ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "col col-7 p-3 ms-2"
+    staticClass: "col col-9 p-3 ms-2"
   }, [_c("router-view", {
     on: {
       "set-loading": _vm.setLoading,

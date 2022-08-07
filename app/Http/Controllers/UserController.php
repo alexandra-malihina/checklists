@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -14,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate(15);
+        return User::paginate(2);
     }
 
     /**
@@ -69,7 +71,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $return_data = [
+			'error' => false,
+			'message' => "Пользователь успешно обновлен",
+			'data' => UserHelper::getAuthUserActions($user),
+			'can' => Gate::check('edit-users')
+		];
+
+		return $return_data;
     }
 
     /**

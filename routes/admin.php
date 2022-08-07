@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\UserHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,16 +20,18 @@ Route::middleware('auth:sanctum')->middleware('admin')->group(function () {
 	Route::get('/actions', function (Request $request) {
 		$user = $request->user();
 		$user->load(['actions.entity','actions.action']);
-		$actions = [];
-		foreach ($user->actions as $action) {
-			$actions[$user->actions->action->code][$user->actions->entity->code] = 1;
-		}
-		// $return_data['actions'] = $actions;
-		// var_dump('hi');
-		// exit();
-		// $user = $request->user();
-		// return $user->hasRole('admin');
-		return $actions;
+
+		return UserHelper::getUserActions($user);
+		// $actions = [];
+		// foreach ($user->actions as $action) {
+		// 	$actions[$user->actions->action->code][$user->actions->entity->code] = 1;
+		// }
+		// // $return_data['actions'] = $actions;
+		// // var_dump('hi');
+		// // exit();
+		// // $user = $request->user();
+		// // return $user->hasRole('admin');
+		// return $actions;
 	});
 
 });

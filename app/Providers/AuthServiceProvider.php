@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\UserHelper;
 use App\Models\Action;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -29,6 +30,9 @@ class AuthServiceProvider extends ServiceProvider
 
 
 		Gate::define('edit-users', function (User $user) {
+			$actions = UserHelper::getAuthUserActions($user);
+
+			return !empty($actions['edit']['users']);
 			// $check = DB::table('entities as e')
 			// ->join(' ')
 			// return $user->id === $post->user_id;
