@@ -21,6 +21,10 @@ class AdminAuth
 		if (! $user->admin) {
 			return response('', 403);
 		}
+		
+		if (! $user->active) {
+			return response('', 403);
+		}
 
 
         return $next($request);

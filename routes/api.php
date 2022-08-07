@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Helpers\UserHelper;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,19 +41,25 @@ Route::middleware('auth:sanctum')->group(function () {
 
 		// Обработка пользователей в админке
 		Route::resource('users', UserController::class)->only([
-			'store', 'update', 'destroy', 'index'
+			'store', 'update', 'index'
+		]);
+		// Обработка прав доступа
+		Route::resource('roles', UserController::class)->only([
+			'update', 'index'
 		]);
 
 		// Права текущего администратора
 		Route::get('/user/actions', function (Request $request) {
 			$user = $request->user();
 			$user->load(['actions.entity','actions.action']);
-			$actions = [];
-			foreach ($user->actions as $action) {
-				$actions[$action->action->code][$action->entity->code] = 1;
-			}
-			session(['actions' => $actions]);
-			return $actions;
+	
+			return UserHelper::getUserActions($user);
+
+
 		});
+
+
+		// Структура для разграничения прав
+		Route::get('/roles/actions',  [RoleController::class, 'actions']);
 	});
 });

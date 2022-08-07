@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\UserHelper;
 use App\Models\Action;
 use App\Models\Entity;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate(2);
+        //
     }
 
     /**
@@ -73,48 +71,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $return_data = [
-			'error' => false,
-			'message' => "Пользователь успешно обновлен",
-			'data' => [],
-		];
-
-		// if (! $user->active) {
-		// 	$return_data = [
-		// 		'error' => true,
-		// 		'message' => "Вы заблокированы и можете только просматривать свои чек-листы!",
-		// 		'data' => [],
-		// 	];
-
-		// 	return $return_data;
-		// }
-
-		if (! Gate::check('edit-users')) {
-			$return_data = [
-				'error' => true,
-				'message' => "У Вас нет прав для реадктирования пользователя!",
-				'data' => [],
-			];
-
-			return $return_data;
-		}
-
-		$admin = intval($request->input('admin'));
-		$active = intval($request->input('active'));
-		$max_check_lists_count = intval($request->input('max_check_lists_count'));
-
-		$user->admin = $admin;
-		$user->active = $active;
-		$user->max_check_lists_count = $max_check_lists_count;
-
-		$user->save();
-
-
-
-
-
-
-		return $return_data;
+        //
     }
 
     /**
@@ -128,6 +85,15 @@ class UserController extends Controller
         //
     }
 
+	/**
+	 * Сущности для управления
+	 */
+	public function actions() 
+	{
+		$return_data = [];
+		$return_data['actions'] = Action::query()->orderBy('name')->get();
+		$return_data['entities'] = Entity::query()->orderBy('name')->get();
 
-	
+		return $return_data;
+	}
 }

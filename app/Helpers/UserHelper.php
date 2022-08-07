@@ -9,11 +9,11 @@ class UserHelper {
 
 	public static function getAuthUserActions(User $user) {
 
-		if ( (session()->exists('actions'))) {
+		if ( (session()->has('actions'))) {
 			self::setAuthUserActionsSession($user);
 		}
 
-		return session('actions');
+		return session()->get('actions');
 
 	}
 
@@ -23,7 +23,7 @@ class UserHelper {
 			$actions = self::getUserActions($user);
 		}
 
-		session('actions', $actions);		
+		session()->put('actions', $actions);		
 	}
 
 	public static function getUserActions(User $user) {

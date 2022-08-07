@@ -29,13 +29,36 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
 
+
+		//users
 		Gate::define('edit-users', function (User $user) {
 			$actions = UserHelper::getAuthUserActions($user);
-
 			return !empty($actions['edit']['users']);
-			// $check = DB::table('entities as e')
-			// ->join(' ')
-			// return $user->id === $post->user_id;
+		});
+		Gate::define('view-users', function (User $user) {
+			$actions = UserHelper::getAuthUserActions($user);
+			return !empty($actions['view']['users']);
+		});
+
+		
+		//checlists
+
+		Gate::define('view-checlists', function (User $user) {
+			$actions = UserHelper::getAuthUserActions($user);
+			return !empty($actions['view']['checlists']);
+		});
+
+
+
+
+		//roles
+		Gate::define('edit-roles', function (User $user) {
+			$actions = UserHelper::getAuthUserActions($user);
+			return !empty($actions['edit']['roles']);
+		});
+		Gate::define('view-roles', function (User $user) {
+			$actions = UserHelper::getAuthUserActions($user);
+			return !empty($actions['view']['roles']);
 		});
     }
 }
