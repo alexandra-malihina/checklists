@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CheckList;
 use App\Models\CheckListItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CheckListItemController extends Controller
 {
@@ -15,7 +16,16 @@ class CheckListItemController extends Controller
      */
     public function index(Request $request)
     {
-		return CheckListItem::where('check_list_id', $request->check_list)->get()->toArray();
+		$user = $request->user();
+		$check_list = CheckList::with('items')->find($request->check_list);
+		if ($check_list->user_id != $user->id) {
+			if (Gate::none('view-checklists') &&  ! $user->active && ! $user->admin ) {
+				abort(403);
+			}
+
+		}
+
+		return $check_list->items->toArray();
     }
 
     /**

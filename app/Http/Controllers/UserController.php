@@ -18,7 +18,27 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate(2);
+		if (Gate::none('view-users')) {
+			abort(403);
+		}
+
+		$users = User::query();
+
+		if (Gate::check('view-checklists')) {
+			$users = $users->with(['checklists']);
+		}
+
+		$users = $users->paginate(7);
+
+		$return_data = [
+			'last_page' => $users->lastPage(),
+			'current_page' => $users->currentPage(),
+			'data' => $users->items(),
+			'can_edit_users' => Gate::check('edit-users'),
+			'can_edit_roles' => Gate::check('edit-roles'),
+			'can_view_checklists' => Gate::check('view-checklists')
+		];
+        return $return_data;
     }
 
     /**
@@ -89,31 +109,30 @@ class UserController extends Controller
 		// 	return $return_data;
 		// }
 
-		if (! Gate::check('edit-users')) {
-			$return_data = [
-				'error' => true,
-				'message' => "У Вас нет прав для реадктирования пользователя!",
-				'data' => [],
-			];
+		if (Gate::none('edit-users')) {
+			abort(403);
+			// $return_data = [
+			// 	'error' => true,
+			// 	'message' => "У Вас нет прав для реадктирования пользователя!",
+			// 	'data' => [],
+			// ];
 
-			return $return_data;
+			// return $return_data;
 		}
 
 		$admin = intval($request->input('admin'));
 		$active = intval($request->input('active'));
 		$max_check_lists_count = intval($request->input('max_check_lists_count'));
 
+		if ($max_check_lists_count < $user->current_check_lists_count) {
+			$max_check_lists_count = $user->current_check_lists_count;
+		}
+
 		$user->admin = $admin;
 		$user->active = $active;
 		$user->max_check_lists_count = $max_check_lists_count;
 
 		$user->save();
-
-
-
-
-
-
 		return $return_data;
     }
 

@@ -105,7 +105,7 @@ var render = function render() {
   }), _vm._v(" "), _c("div", {
     staticClass: "my-3 bg-white d-flex p-3 nav-pills"
   }, [_vm.actions ? _c("ul", {
-    staticClass: "col col-3 d-flex flex-column my-3 nav nav-pills"
+    staticClass: "col col-2 d-flex flex-column my-3 nav nav-pills"
   }, [_c("li", {
     staticClass: "nav-item"
   }, [_vm.actions.view && _vm.actions.view.users ? _c("router-link", {
@@ -115,7 +115,7 @@ var render = function render() {
         name: "users"
       }
     }
-  }, [_vm._v("\n                    Пользователи\n                ")]) : _vm._e()], 1), _vm._v(" "), _c("li", {
+  }, [_vm._v("\n                        Пользователи\n                    ")]) : _vm._e()], 1), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_vm.actions.view && _vm.actions.view.roles ? _c("router-link", {
     staticClass: "nav-link",
@@ -124,9 +124,13 @@ var render = function render() {
         name: "roles"
       }
     }
-  }, [_vm._v("\n                    Управление правами\n                ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                        Управление правами\n                    ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "col col-9 p-3 ms-2"
   }, [_c("router-view", {
+    attrs: {
+      user_actions: _vm.actions,
+      a: 1
+    },
     on: {
       "set-loading": _vm.setLoading,
       "set-message": _vm.setMessage

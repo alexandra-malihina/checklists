@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 			'store', 'update', 'index'
 		]);
 		// Обработка прав доступа
-		Route::resource('roles', UserController::class)->only([
+		Route::resource('roles', RoleController::class)->only([
 			'update', 'index'
 		]);
 
@@ -53,7 +53,8 @@ Route::middleware('auth:sanctum')->group(function () {
 			$user = $request->user();
 			$user->load(['actions.entity','actions.action']);
 	
-			return UserHelper::getUserActions($user);
+			UserHelper::setAuthUserActionsSession($user);
+			return UserHelper::getAuthUserActions($user);
 
 
 		});

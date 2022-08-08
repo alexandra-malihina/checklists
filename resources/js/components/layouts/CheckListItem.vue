@@ -6,10 +6,11 @@
                 type="checkbox"
                 v-model="item.is_done"
                 @change="changeItemDone"
+				:disabled="! can_edit"
             />
         </div>
         <input type="text" class="form-control" :value="item.name" readonly />
-        <div class="btn btn-outline-danger col col-auto" @click="deleteItem">
+        <div class="btn btn-outline-danger col col-auto" @click="deleteItem" v-if="can_edit">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -29,7 +30,7 @@
 <script>
 export default {
     name: "list-item",
-    props: ["item", "index"],
+    props: ["item", "index", "can_edit"],
     methods: {
 		deleteItem() {
 			let is_delete = confirm('Вы точно хотите удалить пункт "' + this.item.name + '"?')

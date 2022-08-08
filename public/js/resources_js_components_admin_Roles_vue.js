@@ -21,18 +21,21 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _layouts_Pagination_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ActionsInputs: _layouts_admin_ActionsInputs_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  props: ['user_actions'],
   data: function data() {
     return {
       users: [],
       actions: [],
       entities: [],
       last_page: 1,
-      current_page: 1
+      current_page: 1,
+      action_inputs_struct: [],
+      can_edit_roles: false
     };
   },
   methods: {
     setShowUserActions: function setShowUserActions(index, value) {
-      this.$set(this.users[index], 'show_actions', value);
+      this.$set(this.users[index], "show_actions", value);
     },
     setMessage: function setMessage(message, error) {
       this.$emit("set-message", message, error);
@@ -63,19 +66,13 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/api/admin/roles?page=" + this.current_page).then(function (res) {
         _this.setLoading(false);
 
-        console.log(res.data);
         _this.users = res.data.data;
         _this.last_page = res.data.last_page;
-        _this.current_page = res.data.current_page; // console.log(this.$ref)
+        _this.current_page = res.data.current_page;
+        _this.can_edit_roles = res.data.can_edit_roles;
 
-        _this.$refs.pagination_ref.setPagination(_this.current_page, _this.last_page); // this.actions = res.data
-        // this.setLoading(false)
-
-      }); //             axios.post("/admin").then((res) => {
-      //     // console.log(res);
-      //     // this.user = res.data
-      // 	// this.setLoading(false)
-      // });
+        _this.$refs.pagination_ref.setPagination(_this.current_page, _this.last_page);
+      });
     }
   },
   mounted: function mounted() {
@@ -198,9 +195,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ActionsInputs',
-  props: ['actions', 'entities', 'user'],
+  props: ['actions', 'entities', 'user', 'disabled'],
   data: function data() {
     return {};
+  },
+  methods: {
+    setMessage: function setMessage(message, error) {
+      this.$emit("set-message", message, error);
+    },
+    setLoading: function setLoading(is_loading) {
+      this.$emit("set-loading", is_loading);
+    },
+    updateUserAction: function updateUserAction(user_id, action_id, entity_id, active) {
+      var _this = this;
+
+      this.setLoading(true);
+      axios.put("/api/admin/roles/" + user_id, {
+        action: action_id,
+        entity: entity_id,
+        active: active
+      }).then(function (res) {
+        _this.setLoading(false);
+
+        console.log(res.data);
+
+        _this.setMessage(res.data.message, res.data.error); // console.log(this.$ref)
+
+      });
+    }
   }
 });
 
@@ -226,7 +248,7 @@ var render = function render() {
   }, [_vm._l(_vm.users, function (user, index) {
     return _c("div", {
       key: user.id,
-      staticClass: "d-flex flex-column border rounded-3 p-2 justify-content-between align-items-baseline",
+      staticClass: "d-flex flex-column border rounded-3 p-2 align-items-baseline",
       staticStyle: {
         gap: "25px"
       },
@@ -234,33 +256,39 @@ var render = function render() {
         index: index
       }
     }, [_c("div", {
-      staticClass: "d-flex p-2 justify-content-between align-items-baseline",
-      staticStyle: {
-        gap: "25px"
-      }
-    }, [_c("span", [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c("span", {
-      staticClass: "text-secondary"
-    }, [_vm._v(_vm._s(user.email))]), _vm._v(" "), !user.show_actions ? _c("div", {
+      staticClass: "d-flex p-2 justify-content-between w-100 align-items-baseline"
+    }, [_c("span", [_vm._v("#" + _vm._s(user.id) + " " + _vm._s(user.name))]), _vm._v(" "), !user.show_actions ? _c("div", {
       staticClass: "btn btn-outline-info",
       on: {
         click: function click($event) {
           return _vm.setShowUserActions(index, true);
         }
       }
-    }, [_vm._v("\n\t\t\t\tПросмотреть права\n\t\t\t")]) : _c("div", {
+    }, [_vm._v("\n                    Просмотреть права\n                ")]) : _c("div", {
       staticClass: "btn btn-outline-info active",
       on: {
         click: function click($event) {
           return _vm.setShowUserActions(index, false);
         }
       }
-    }, [_vm._v("\n\t\t\t\tСкрыть права\n\t\t\t")])]), _vm._v(" "), user.show_actions ? _c("actions-inputs", {
+    }, [_vm._v("\n                    Скрыть права\n                ")])]), _vm._v(" "), _c("actions-inputs", {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: user.show_actions,
+        expression: "user.show_actions"
+      }],
       attrs: {
         actions: _vm.actions,
         entities: _vm.entities,
-        user: user
+        user: user,
+        disabled: !_vm.can_edit_roles
+      },
+      on: {
+        "set-loading": _vm.setLoading,
+        "set-message": _vm.setMessage
       }
-    }) : _vm._e()], 1);
+    })], 1);
   }), _vm._v(" "), _c("pagination", {
     ref: "pagination_ref",
     staticClass: "mt-3",
@@ -402,10 +430,42 @@ var render = function render() {
           index: index
         }
       }, [_c("input", {
+        directives: [{
+          name: "model",
+          rawName: "v-model",
+          value: _vm.user.actions[action.code][entity.code],
+          expression: "user.actions[action.code][entity.code]"
+        }],
         staticClass: "form-check-input",
         attrs: {
           type: "checkbox",
-          role: "switch"
+          role: "switch",
+          disabled: _vm.disabled
+        },
+        domProps: {
+          checked: Array.isArray(_vm.user.actions[action.code][entity.code]) ? _vm._i(_vm.user.actions[action.code][entity.code], null) > -1 : _vm.user.actions[action.code][entity.code]
+        },
+        on: {
+          change: [function ($event) {
+            var $$a = _vm.user.actions[action.code][entity.code],
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false;
+
+            if (Array.isArray($$a)) {
+              var $$v = null,
+                  $$i = _vm._i($$a, $$v);
+
+              if ($$el.checked) {
+                $$i < 0 && _vm.$set(_vm.user.actions[action.code], entity.code, $$a.concat([$$v]));
+              } else {
+                $$i > -1 && _vm.$set(_vm.user.actions[action.code], entity.code, $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+              }
+            } else {
+              _vm.$set(_vm.user.actions[action.code], entity.code, $$c);
+            }
+          }, function ($event) {
+            return _vm.updateUserAction(_vm.user.id, action.id, entity.id, _vm.user.actions[action.code][entity.code]);
+          }]
         }
       }), _vm._v(" "), _c("label", {
         staticClass: "form-check-label me-3"

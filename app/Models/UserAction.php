@@ -10,6 +10,7 @@ class UserAction extends Model
 	protected $table = 'user_action';
 	public $timestamps = false;
 
+	protected $fillable = ['user_id', 'action_id', 'entity_id'];
 	// protected $width = ['action', 'entity'];
 
 

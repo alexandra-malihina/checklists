@@ -52,6 +52,15 @@ class User extends Authenticatable
 		);
 	}
 
+	/**
+	 * Связь с чек-листами пользователя
+	 */
+	public function checklists() {
+		return $this->hasMany(
+			CheckList::class
+		);
+	}
+
 	// public function hasRole($role) {
 	// 	return $this->belongsToMany(
 	// 		Role::class

@@ -101,7 +101,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     CheckListItem: _CheckListItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['check_list_info', 'index'],
+  props: ['check_list_info', 'index', 'can_edit'],
   name: 'check-list',
   data: function data() {
     return {
@@ -210,7 +210,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "list-item",
-  props: ["item", "index"],
+  props: ["item", "index", "can_edit"],
   methods: {
     deleteItem: function deleteItem() {
       var _this = this;
@@ -317,7 +317,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "container my-5 bg-white p-3"
-  }, [_vm.user && _vm.user.max_check_lists_count && _vm.checklists.length < _vm.user.max_check_lists_count ? _c("div", {
+  }, [_vm.user.active && _vm.user ? _c("div", [_vm.user && _vm.user.max_check_lists_count && _vm.checklists.length < _vm.user.max_check_lists_count ? _c("div", {
     staticClass: "row col col-12 col-md-6 mb-3 mx-auto"
   }, [_c("label", [_vm._v("Новый чек-лист")]), _vm._v(" "), _c("div", {
     staticClass: "form-group input-group"
@@ -351,7 +351,9 @@ var render = function render() {
     on: {
       click: _vm.addNewCheckList
     }
-  }, [_vm._v("\n                        Добавить\n                    ")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n\t\t\t\t\t\t\tДобавить\n\t\t\t\t\t\t")])])]) : _vm._e()]) : _c("div", {
+    staticClass: "alert alert-danger"
+  }, [_vm._v("\n\t\t\t\tВы заблокированы и можете только просматривать свои чек-листы!\n\t\t\t")]), _vm._v(" "), _c("div", {
     staticClass: "row mb-3"
   }, [_c("h2", {
     staticClass: "h2 text-secondary col col-auto mx-auto"
@@ -362,7 +364,8 @@ var render = function render() {
       key: checklist.id,
       attrs: {
         check_list_info: checklist,
-        index: index
+        index: index,
+        can_edit: _vm.user.active
       },
       on: {
         "set-loading": _vm.setLoading,
@@ -426,7 +429,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "accordion-body"
-  }, [_c("div", [_c("div", {
+  }, [_c("div", [_vm.can_edit ? _c("div", {
     staticClass: "mb-3"
   }, [_c("label", [_vm._v("Новый пункт")]), _vm._v(" "), _c("div", {
     staticClass: "form-group input-group"
@@ -460,12 +463,13 @@ var render = function render() {
     on: {
       click: _vm.addNewCheckListItem
     }
-  }, [_vm._v("\r\n\t\t\t\t\t\tДобавить\r\n\t\t\t\t\t")])])]), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
+  }, [_vm._v("\r\n\t\t\t\t\t\tДобавить\r\n\t\t\t\t\t")])])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
     return _c("CheckListItem", {
       key: item.id,
       attrs: {
         item: item,
-        index: index
+        index: index,
+        can_edit: _vm.can_edit
       },
       on: {
         "set-done": _vm.setDone,
@@ -474,12 +478,12 @@ var render = function render() {
         "set-message": _vm.setMessage
       }
     });
-  }), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _vm.can_edit ? _c("div", {
     staticClass: "btn btn-outline-danger",
     on: {
       click: _vm.deleteCheckList
     }
-  }, [_vm._v("\r\n\t\t\t\tУдалить список\r\n\t\t\t")])], 2)])])]);
+  }, [_vm._v("\r\n\t\t\t\tУдалить список\r\n\t\t\t")]) : _vm._e()], 2)])])]);
 };
 
 var staticRenderFns = [];
@@ -516,7 +520,8 @@ var render = function render() {
     }],
     staticClass: "form-check-input mt-0",
     attrs: {
-      type: "checkbox"
+      type: "checkbox",
+      disabled: !_vm.can_edit
     },
     domProps: {
       checked: Array.isArray(_vm.item.is_done) ? _vm._i(_vm.item.is_done, null) > -1 : _vm.item.is_done
@@ -550,7 +555,7 @@ var render = function render() {
     domProps: {
       value: _vm.item.name
     }
-  }), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _vm.can_edit ? _c("div", {
     staticClass: "btn btn-outline-danger col col-auto",
     on: {
       click: _vm.deleteItem
@@ -568,7 +573,7 @@ var render = function render() {
     attrs: {
       d: "M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
     }
-  })])])]);
+  })])]) : _vm._e()]);
 };
 
 var staticRenderFns = [];

@@ -4,7 +4,7 @@
 
         <div class="my-3 bg-white d-flex p-3 nav-pills">
             <ul
-                class="col col-3 d-flex flex-column my-3 nav nav-pills"
+                class="col col-2 d-flex flex-column my-3 nav nav-pills"
                 v-if="actions"
             >
                 <li class="nav-item">
@@ -28,6 +28,8 @@
             </ul>
             <div class="col col-9 p-3 ms-2">
                 <router-view
+					:user_actions="actions"
+					:a="1"
                     @set-loading="setLoading"
                     @set-message="setMessage"
                 ></router-view>

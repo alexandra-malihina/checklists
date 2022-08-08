@@ -43,9 +43,9 @@ class AuthServiceProvider extends ServiceProvider
 		
 		//checlists
 
-		Gate::define('view-checlists', function (User $user) {
+		Gate::define('view-checklists', function (User $user) {
 			$actions = UserHelper::getAuthUserActions($user);
-			return !empty($actions['view']['checlists']);
+			return !empty($actions['view']['check_lists']);
 		});
 
 

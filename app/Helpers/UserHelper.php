@@ -23,7 +23,7 @@ class UserHelper {
 			$actions = self::getUserActions($user);
 		}
 
-		session()->put('actions', $actions);		
+		session(['actions' => $actions]);		
 	}
 
 	public static function getUserActions(User $user) {

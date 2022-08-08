@@ -1,25 +1,41 @@
 <template>
     <div class="d-flex flex-column">
         <div
-            class="d-flex  flex-column border rounded-3 p-2 justify-content-between align-items-baseline"
+            class="d-flex flex-column border rounded-3 p-2  align-items-baseline"
             style="gap: 25px"
             v-for="(user, index) in users"
             :key="user.id"
             :index="index"
         >
-			<div class="d-flex p-2 justify-content-between align-items-baseline" style="gap: 25px">
-            <span>{{ user.name }}</span>
-            <span class="text-secondary">{{ user.email }}</span>
-            <div class="btn btn-outline-info" @click="setShowUserActions(index, true)" v-if="!user.show_actions">
-				Просмотреть права
-			</div>
-            <div class="btn btn-outline-info active" @click="setShowUserActions(index, false)" v-else>
-				Скрыть права
-			</div>
+            <div
+                class="d-flex p-2 justify-content-between w-100 align-items-baseline"
+            >
+                <span>#{{ user.id}} {{ user.name }}</span>
+                <div
+                    class="btn btn-outline-info"
+                    @click="setShowUserActions(index, true)"
+                    v-if="!user.show_actions"
+                >
+                    Просмотреть права
+                </div>
+                <div
+                    class="btn btn-outline-info active"
+                    @click="setShowUserActions(index, false)"
+                    v-else
+                >
+                    Скрыть права
+                </div>
+            </div>
 
-			</div>
-
-			 <actions-inputs :actions="actions" :entities="entities" :user="user" v-if="user.show_actions"></actions-inputs>
+            <actions-inputs
+                :actions="actions"
+                :entities="entities"
+                :user="user"
+                v-show="user.show_actions"
+                @set-loading="setLoading"
+                @set-message="setMessage"
+				:disabled="! can_edit_roles"
+            ></actions-inputs>
         </div>
         <pagination
             class="mt-3"
@@ -37,6 +53,7 @@ import ActionsInputs from "../layouts/admin/ActionsInputs.vue";
 export default {
     name: "roles",
     components: { Pagination, ActionsInputs },
+	props: ['user_actions'],
     data() {
         return {
             users: [],
@@ -44,14 +61,14 @@ export default {
             entities: [],
             last_page: 1,
             current_page: 1,
+            action_inputs_struct: [],
+			can_edit_roles: false
         };
     },
     methods: {
-		setShowUserActions(index, value) {
-
-			this.$set(this.users[index], 'show_actions',  value)
-			
-		},
+        setShowUserActions(index, value) {
+            this.$set(this.users[index], "show_actions", value);
+        },
         setMessage(message, error) {
             this.$emit("set-message", message, error);
         },
@@ -71,45 +88,36 @@ export default {
             this.current_page = current_page;
             this.getUsers();
         },
-		getUsers() {
+        getUsers() {
             this.setLoading(true);
             axios
                 .get("/api/admin/roles?page=" + this.current_page)
                 .then((res) => {
                     this.setLoading(false);
-                    console.log(res.data);
-                    this.users = res.data.data;
-                    this.last_page = res.data.last_page;
-                    this.current_page = res.data.current_page;
-                    // console.log(this.$ref)
+                    this.users = res.data.data
+                    this.last_page = res.data.last_page
+                    this.current_page = res.data.current_page
+					this.can_edit_roles = res.data.can_edit_roles
                     this.$refs.pagination_ref.setPagination(
                         this.current_page,
                         this.last_page
                     );
-                    // this.actions = res.data
-                    // this.setLoading(false)
                 });
-            //             axios.post("/admin").then((res) => {
-            //     // console.log(res);
-            //     // this.user = res.data
-            // 	// this.setLoading(false)
-            // });
         },
     },
-	mounted() {
-		this.setLoading(true);
-		 axios
-                .get("/api/admin/roles/actions")
-                .then((res) => {
-                    this.setLoading(false);
-                    console.log(res.data);
-                    this.actions = res.data.actions;
-                    this.entities = res.data.entities;
+    mounted() {
+        this.setLoading(true);
+        axios.get("/api/admin/roles/actions").then((res) => {
+            this.setLoading(false);
+            console.log(res.data);
+            this.actions = res.data.actions;
+            this.entities = res.data.entities;
 
-					this.getUsers()
-                    // this.actions = res.data
-                    // this.setLoading(false)
-                });
-	}
+            this.getUsers();
+			
+            // this.actions = res.data
+            // this.setLoading(false)
+        });
+    },
 };
 </script>

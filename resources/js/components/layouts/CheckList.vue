@@ -10,7 +10,7 @@
     <div :id="'collapse_' + check_block_id" class="accordion-collapse collapse" aria-labelledby="headingOne" :data-bs-parent="'#' + check_block_id">
       <div class="accordion-body">
 		<div >
-			<div class=" mb-3">
+			<div class=" mb-3" v-if="can_edit">
 				<label>Новый пункт</label>
 				<div class=" form-group input-group">
 					<input
@@ -31,12 +31,13 @@
 			v-bind:key="item.id" 
 			v-bind:item="item" 
 			v-bind:index="index" 
+			:can_edit="can_edit"
 			@set-done="setDone"
 			@remove="removeItem"
 			@set-loading="setLoading"
             @set-message="setMessage"
 			></CheckListItem>
-			<div class="btn btn-outline-danger" @click="deleteCheckList">
+			<div class="btn btn-outline-danger" @click="deleteCheckList" v-if="can_edit">
 				Удалить список
 			</div>
 
@@ -49,7 +50,7 @@
 import CheckListItem from './CheckListItem.vue'
 export default  {
 	components: {CheckListItem},
-	props: ['check_list_info', 'index'],
+	props: ['check_list_info', 'index', 'can_edit'],
 	name: 'check-list',
 	data() {
 		return {
