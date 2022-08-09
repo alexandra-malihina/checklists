@@ -15,7 +15,6 @@ class CheckListController extends Controller
      */
     public function index(Request $request)
     {
-        // return $request->user();
 		return CheckList::where('user_id', $request->user()->id)->get()->toArray();
     }
 

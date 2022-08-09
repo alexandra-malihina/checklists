@@ -37,15 +37,10 @@ __webpack_require__.r(__webpack_exports__);
 
     this.setLoading(true);
     axios.get("/api/admin/user/actions").then(function (res) {
-      console.log(res);
       _this.actions = res.data;
 
       _this.setLoading(false);
-    }); //             axios.post("/admin").then((res) => {
-    //     // console.log(res);
-    //     // this.user = res.data
-    // 	// this.setLoading(false)
-    // });
+    });
   }
 });
 
@@ -76,8 +71,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
-  },
-  mounted: function mounted() {// console.log(user)
   }
 });
 
@@ -115,7 +108,7 @@ var render = function render() {
         name: "users"
       }
     }
-  }, [_vm._v("\n                        Пользователи\n                    ")]) : _vm._e()], 1), _vm._v(" "), _c("li", {
+  }, [_vm._v("\n                    Пользователи\n                ")]) : _vm._e()], 1), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_vm.actions.view && _vm.actions.view.roles ? _c("router-link", {
     staticClass: "nav-link",
@@ -124,7 +117,7 @@ var render = function render() {
         name: "roles"
       }
     }
-  }, [_vm._v("\n                        Управление правами\n                    ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                    Управление правами\n                ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "col col-9 p-3 ms-2"
   }, [_c("router-view", {
     attrs: {
@@ -177,7 +170,7 @@ var render = function render() {
         name: "admin"
       }
     }
-  }, [_vm._v("\n\t\t\t\t\tАдминка\n\t\t\t\t")]) : _vm._e(), _vm._v("\n                " + _vm._s(_vm.user.name) + "\n                "), _c("a", {
+  }, [_vm._v("\n                Админка\n            ")]) : _vm._e(), _vm._v("\n            " + _vm._s(_vm.user.name) + "\n            "), _c("a", {
     staticClass: "small mx-2",
     attrs: {
       href: "#"

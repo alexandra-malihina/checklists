@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column">
         <div
-            class="d-flex flex-column border rounded-3 p-2  align-items-baseline"
+            class="d-flex flex-column border rounded-3 p-2 align-items-baseline"
             style="gap: 25px"
             v-for="(user, index) in users"
             :key="user.id"
@@ -10,7 +10,7 @@
             <div
                 class="d-flex p-2 justify-content-between w-100 align-items-baseline"
             >
-                <span>#{{ user.id}} {{ user.name }}</span>
+                <span>#{{ user.id }} {{ user.name }}</span>
                 <div
                     class="btn btn-outline-info"
                     @click="setShowUserActions(index, true)"
@@ -34,7 +34,7 @@
                 v-show="user.show_actions"
                 @set-loading="setLoading"
                 @set-message="setMessage"
-				:disabled="! can_edit_roles"
+                :disabled="!can_edit_roles"
             ></actions-inputs>
         </div>
         <pagination
@@ -53,7 +53,7 @@ import ActionsInputs from "../layouts/admin/ActionsInputs.vue";
 export default {
     name: "roles",
     components: { Pagination, ActionsInputs },
-	props: ['user_actions'],
+    props: ["user_actions"],
     data() {
         return {
             users: [],
@@ -62,7 +62,7 @@ export default {
             last_page: 1,
             current_page: 1,
             action_inputs_struct: [],
-			can_edit_roles: false
+            can_edit_roles: false,
         };
     },
     methods: {
@@ -94,10 +94,10 @@ export default {
                 .get("/api/admin/roles?page=" + this.current_page)
                 .then((res) => {
                     this.setLoading(false);
-                    this.users = res.data.data
-                    this.last_page = res.data.last_page
-                    this.current_page = res.data.current_page
-					this.can_edit_roles = res.data.can_edit_roles
+                    this.users = res.data.data;
+                    this.last_page = res.data.last_page;
+                    this.current_page = res.data.current_page;
+                    this.can_edit_roles = res.data.can_edit_roles;
                     this.$refs.pagination_ref.setPagination(
                         this.current_page,
                         this.last_page
@@ -109,14 +109,10 @@ export default {
         this.setLoading(true);
         axios.get("/api/admin/roles/actions").then((res) => {
             this.setLoading(false);
-            console.log(res.data);
             this.actions = res.data.actions;
             this.entities = res.data.entities;
 
             this.getUsers();
-			
-            // this.actions = res.data
-            // this.setLoading(false)
         });
     },
 };

@@ -6,11 +6,15 @@
                 type="checkbox"
                 v-model="item.is_done"
                 @change="changeItemDone"
-				:disabled="! can_edit"
+                :disabled="!can_edit"
             />
         </div>
         <input type="text" class="form-control" :value="item.name" readonly />
-        <div class="btn btn-outline-danger col col-auto" @click="deleteItem" v-if="can_edit">
+        <div
+            class="btn btn-outline-danger col col-auto"
+            @click="deleteItem"
+            v-if="can_edit"
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -32,25 +36,31 @@ export default {
     name: "list-item",
     props: ["item", "index", "can_edit"],
     methods: {
-		deleteItem() {
-			let is_delete = confirm('Вы точно хотите удалить пункт "' + this.item.name + '"?')
-			if ( ! is_delete) {
-				return false
-			}
-			this.$emit('set-loading', true)
-			axios.delete('/api/check-lists/' + this.item.check_list_id + '/items/' + this.item.id)
-			.then( (r) => {
-				this.$emit('set-loading', false)
-				let data = r.data
-				this.$emit('set-message', data.message, data.error)
-				if (!data.error) {
-      				// this.$destroy();
-      				// this.$el.parentNode.removeChild(this.$el);
-					this.$emit('remove', this.index)
-					this.$emit("set-done", data.data.check_list.is_done);
-				}
-			});
-		},
+        deleteItem() {
+            let is_delete = confirm(
+                'Вы точно хотите удалить пункт "' + this.item.name + '"?'
+            );
+            if (!is_delete) {
+                return false;
+            }
+            this.$emit("set-loading", true);
+            axios
+                .delete(
+                    "/api/check-lists/" +
+                        this.item.check_list_id +
+                        "/items/" +
+                        this.item.id
+                )
+                .then((r) => {
+                    this.$emit("set-loading", false);
+                    let data = r.data;
+                    this.$emit("set-message", data.message, data.error);
+                    if (!data.error) {
+                        this.$emit("remove", this.index);
+                        this.$emit("set-done", data.data.check_list.is_done);
+                    }
+                });
+        },
         changeItemDone() {
             this.$emit("set-loading", true);
             axios
@@ -64,14 +74,12 @@ export default {
                     }
                 )
                 .then((r) => {
-                    // console.log(r);
                     this.$emit("set-loading", false);
-                    let data = r.data
-                    this.$emit('set-message', data.message, data.error)
+                    let data = r.data;
+                    this.$emit("set-message", data.message, data.error);
                     this.items = data;
                     this.is_load_items = true;
                     this.$emit("set-done", data.data.check_list.is_done);
-                    // console.log(this.items)
                 });
         },
     },

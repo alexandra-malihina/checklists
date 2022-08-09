@@ -5,7 +5,7 @@ import Login from './components/Login.vue'
 
 Vue.use(VueRouter)
 
-const router =  new VueRouter({
+const router = new VueRouter({
 	mode: 'history',
 	linkActiveClass: "active",
 	linkExactActiveClass: "exact-active",
@@ -49,10 +49,10 @@ const router =  new VueRouter({
 	]
 })
 
-router.beforeEach( ( to, from, next) => {
+router.beforeEach((to, from, next) => {
 	const token = localStorage.getItem('x_xsrf_token')
 
-	if (! token) {
+	if (!token) {
 		if (to.name === 'user.login' || to.name === 'user.register') {
 			return next()
 		}
@@ -63,7 +63,7 @@ router.beforeEach( ( to, from, next) => {
 	}
 	else {
 		if (to.name === 'user.login' || to.name === 'user.register') {
-			return next({name:'checklists'})
+			return next({ name: 'checklists' })
 		}
 		return next()
 	}

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\UserHelper;
-use App\Models\Action;
-use App\Models\Entity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -99,25 +96,9 @@ class UserController extends Controller
 			'data' => [],
 		];
 
-		// if (! $user->active) {
-		// 	$return_data = [
-		// 		'error' => true,
-		// 		'message' => "Вы заблокированы и можете только просматривать свои чек-листы!",
-		// 		'data' => [],
-		// 	];
-
-		// 	return $return_data;
-		// }
 
 		if (Gate::none('edit-users')) {
 			abort(403);
-			// $return_data = [
-			// 	'error' => true,
-			// 	'message' => "У Вас нет прав для реадктирования пользователя!",
-			// 	'data' => [],
-			// ];
-
-			// return $return_data;
 		}
 
 		$admin = intval($request->input('admin'));

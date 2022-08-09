@@ -28,8 +28,8 @@
             </ul>
             <div class="col col-9 p-3 ms-2">
                 <router-view
-					:user_actions="actions"
-					:a="1"
+                    :user_actions="actions"
+                    :a="1"
                     @set-loading="setLoading"
                     @set-message="setMessage"
                 ></router-view>
@@ -43,31 +43,25 @@ export default {
     props: ["user"],
     name: "dashboard",
     components: { Menu },
-	methods: {
-		setMessage(message, error) {
+    methods: {
+        setMessage(message, error) {
             this.$emit("set-message", message, error);
         },
         setLoading(is_loading) {
             this.$emit("set-loading", is_loading);
         },
-	},
+    },
     data() {
         return {
             actions: {},
         };
     },
     mounted() {
-		this.setLoading(true)
+        this.setLoading(true);
         axios.get("/api/admin/user/actions").then((res) => {
-            console.log(res);
             this.actions = res.data;
-            this.setLoading(false)
+            this.setLoading(false);
         });
-        //             axios.post("/admin").then((res) => {
-        //     // console.log(res);
-        //     // this.user = res.data
-        // 	// this.setLoading(false)
-        // });
     },
 };
 </script>

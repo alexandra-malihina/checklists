@@ -21,7 +21,7 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _layouts_Pagination_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     ActionsInputs: _layouts_admin_ActionsInputs_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['user_actions'],
+  props: ["user_actions"],
   data: function data() {
     return {
       users: [],
@@ -82,13 +82,10 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/api/admin/roles/actions").then(function (res) {
       _this2.setLoading(false);
 
-      console.log(res.data);
       _this2.actions = res.data.actions;
       _this2.entities = res.data.entities;
 
-      _this2.getUsers(); // this.actions = res.data
-      // this.setLoading(false)
-
+      _this2.getUsers();
     });
   }
 });
@@ -107,7 +104,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "pagination",
-  // props: ['last_page', 'current_page'],
   data: function data() {
     return {
       pages: [1],
@@ -131,7 +127,6 @@ __webpack_require__.r(__webpack_exports__);
     setPagination: function setPagination(current_page, last_page) {
       this.current_page = current_page;
       this.last_page = last_page;
-      console.log("pp");
       this.pages = [];
 
       if (this.last_page <= 10) {
@@ -159,8 +154,7 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var _i2 = current_page - 1; _i2 <= this.last_page; _i2++) {
           this.pages.push(_i2);
-        } // this.pages.push(last_page)
-
+        }
 
         return false;
       }
@@ -175,9 +169,6 @@ __webpack_require__.r(__webpack_exports__);
       this.pages.push(last_page);
       return false;
     }
-  },
-  updated: function updated() {
-    console.log("u");
   }
 });
 
@@ -194,8 +185,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'ActionsInputs',
-  props: ['actions', 'entities', 'user', 'disabled'],
+  name: "ActionsInputs",
+  props: ["actions", "entities", "user", "disabled"],
   data: function data() {
     return {};
   },
@@ -217,10 +208,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.setLoading(false);
 
-        console.log(res.data);
-
-        _this.setMessage(res.data.message, res.data.error); // console.log(this.$ref)
-
+        _this.setMessage(res.data.message, res.data.error);
       });
     }
   }
@@ -264,14 +252,14 @@ var render = function render() {
           return _vm.setShowUserActions(index, true);
         }
       }
-    }, [_vm._v("\n                    Просмотреть права\n                ")]) : _c("div", {
+    }, [_vm._v("\n                Просмотреть права\n            ")]) : _c("div", {
       staticClass: "btn btn-outline-info active",
       on: {
         click: function click($event) {
           return _vm.setShowUserActions(index, false);
         }
       }
-    }, [_vm._v("\n                    Скрыть права\n                ")])]), _vm._v(" "), _c("actions-inputs", {
+    }, [_vm._v("\n                Скрыть права\n            ")])]), _vm._v(" "), _c("actions-inputs", {
       directives: [{
         name: "show",
         rawName: "v-show",
@@ -420,7 +408,7 @@ var render = function render() {
       attrs: {
         index: i
       }
-    }, [_c("h4", [_vm._v(" " + _vm._s(entity.name))]), _vm._v(" "), _c("div", {
+    }, [_c("h4", [_vm._v(_vm._s(entity.name))]), _vm._v(" "), _c("div", {
       staticClass: "row"
     }, _vm._l(_vm.actions, function (action, index) {
       return _c("div", {
@@ -469,7 +457,7 @@ var render = function render() {
         }
       }), _vm._v(" "), _c("label", {
         staticClass: "form-check-label me-3"
-      }, [_vm._v(" " + _vm._s(action.name) + " ")])]);
+      }, [_vm._v("\n                    " + _vm._s(action.name) + "\n                ")])]);
     }), 0)]);
   }), 0);
 };

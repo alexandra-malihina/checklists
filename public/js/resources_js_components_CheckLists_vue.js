@@ -39,8 +39,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/check-lists", {
         name: this.new_checklist
       }).then(function (r) {
-        console.log(r);
-
         _this.$emit("set-loading", false);
 
         var data = r.data;
@@ -60,19 +58,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    console.log(this.user);
     this.$emit("set-loading", true);
     axios.get("/api/check-lists").then(function (r) {
-      console.log(r);
-
       _this2.$emit("set-loading", false);
 
-      _this2.checklists = r.data; // let data = r.data
-      // this.$emit('set-message', data.message, data.error)
-      // if (!data.error) {
-      // 	this.new_checklist = null
-      // 	this.checklists.push(data.data)
-      // }
+      _this2.checklists = r.data;
     });
   },
   data: function data() {
@@ -101,8 +91,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     CheckListItem: _CheckListItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['check_list_info', 'index', 'can_edit'],
-  name: 'check-list',
+  props: ["check_list_info", "index", "can_edit"],
+  name: "check-list",
   data: function data() {
     return {
       new_item: null,
@@ -112,7 +102,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.check_block_id = 'check_' + this.check_list_info.id;
+    this.check_block_id = "check_" + this.check_list_info.id;
   },
   methods: {
     setMessage: function setMessage(message, error) {
@@ -133,18 +123,16 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios["delete"]('/api/check-lists/' + this.check_list_info.id).then(function (r) {
-        _this.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios["delete"]("/api/check-lists/" + this.check_list_info.id).then(function (r) {
+        _this.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this.$emit('set-message', data.message, data.error);
+        _this.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
-          // this.$destroy();
-          // this.$el.parentNode.removeChild(this.$el);
-          _this.$emit('remove', _this.index);
+          _this.$emit("remove", _this.index);
         }
       });
     },
@@ -158,31 +146,26 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios.get("/api/check-lists/" + this.check_list_info.id + '/items').then(function (r) {
-        console.log(r);
-
-        _this2.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios.get("/api/check-lists/" + this.check_list_info.id + "/items").then(function (r) {
+        _this2.$emit("set-loading", false);
 
         _this2.items = r.data;
         _this2.is_load_items = true;
-        console.log(_this2.items);
       });
     },
     addNewCheckListItem: function addNewCheckListItem() {
       var _this3 = this;
 
-      this.$emit('set-loading', true);
-      axios.post("/api/check-lists/" + this.check_list_info.id + '/items', {
+      this.$emit("set-loading", true);
+      axios.post("/api/check-lists/" + this.check_list_info.id + "/items", {
         name: this.new_item
       }).then(function (r) {
-        console.log(r);
-
-        _this3.$emit('set-loading', false);
+        _this3.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this3.$emit('set-message', data.message, data.error);
+        _this3.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
           _this3.new_item = null;
@@ -221,18 +204,16 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios["delete"]('/api/check-lists/' + this.item.check_list_id + '/items/' + this.item.id).then(function (r) {
-        _this.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios["delete"]("/api/check-lists/" + this.item.check_list_id + "/items/" + this.item.id).then(function (r) {
+        _this.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this.$emit('set-message', data.message, data.error);
+        _this.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
-          // this.$destroy();
-          // this.$el.parentNode.removeChild(this.$el);
-          _this.$emit('remove', _this.index);
+          _this.$emit("remove", _this.index);
 
           _this.$emit("set-done", data.data.check_list.is_done);
         }
@@ -245,18 +226,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("/api/check-lists/" + this.item.check_list_id + "/items/" + this.item.id, {
         is_done: this.item.is_done
       }).then(function (r) {
-        // console.log(r);
         _this2.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this2.$emit('set-message', data.message, data.error);
+        _this2.$emit("set-message", data.message, data.error);
 
         _this2.items = data;
         _this2.is_load_items = true;
 
-        _this2.$emit("set-done", data.data.check_list.is_done); // console.log(this.items)
-
+        _this2.$emit("set-done", data.data.check_list.is_done);
       });
     }
   }
@@ -289,8 +268,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
-  },
-  mounted: function mounted() {// console.log(user)
   }
 });
 
@@ -351,13 +328,13 @@ var render = function render() {
     on: {
       click: _vm.addNewCheckList
     }
-  }, [_vm._v("\n\t\t\t\t\t\t\tДобавить\n\t\t\t\t\t\t")])])]) : _vm._e()]) : _c("div", {
+  }, [_vm._v("\n                        Добавить\n                    ")])])]) : _vm._e()]) : _c("div", {
     staticClass: "alert alert-danger"
-  }, [_vm._v("\n\t\t\t\tВы заблокированы и можете только просматривать свои чек-листы!\n\t\t\t")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n            Вы заблокированы и можете только просматривать свои чек-листы!\n        ")]), _vm._v(" "), _c("div", {
     staticClass: "row mb-3"
   }, [_c("h2", {
     staticClass: "h2 text-secondary col col-auto mx-auto"
-  }, [_vm._v("\n                    " + _vm._s(_vm.checklists.length) + " / " + _vm._s(_vm.user.max_check_lists_count) + "\n                ")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                " + _vm._s(_vm.checklists.length) + " / " + _vm._s(_vm.user.max_check_lists_count) + "\n            ")])]), _vm._v(" "), _c("div", {
     staticClass: "accordion col col-12 col-md-6 mx-auto"
   }, _vm._l(_vm.checklists, function (checklist, index) {
     return _c("check-list", {
@@ -416,9 +393,9 @@ var render = function render() {
       "aria-expanded": "false",
       "aria-controls": "collapse_" + _vm.check_block_id
     }
-  }, [_vm._v("\r\n\t\t" + _vm._s(_vm.check_list_info.name) + " \r\n\t\t"), _vm.check_list_info.is_done ? _c("span", {
+  }, [_vm._v("\n            " + _vm._s(_vm.check_list_info.name) + "\n            "), _vm.check_list_info.is_done ? _c("span", {
     staticClass: "ms-3 badge bg-success"
-  }, [_vm._v(" Выполнен")]) : _c("span", {
+  }, [_vm._v("\n                Выполнен")]) : _c("span", {
     staticClass: "ms-3 badge bg-secondary"
   }, [_vm._v(" Не выполнен")])])]), _vm._v(" "), _c("div", {
     staticClass: "accordion-collapse collapse",
@@ -463,7 +440,7 @@ var render = function render() {
     on: {
       click: _vm.addNewCheckListItem
     }
-  }, [_vm._v("\r\n\t\t\t\t\t\tДобавить\r\n\t\t\t\t\t")])])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
+  }, [_vm._v("\n                            Добавить\n                        ")])])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
     return _c("CheckListItem", {
       key: item.id,
       attrs: {
@@ -483,7 +460,7 @@ var render = function render() {
     on: {
       click: _vm.deleteCheckList
     }
-  }, [_vm._v("\r\n\t\t\t\tУдалить список\r\n\t\t\t")]) : _vm._e()], 2)])])]);
+  }, [_vm._v("\n                    Удалить список\n                ")]) : _vm._e()], 2)])])]);
 };
 
 var staticRenderFns = [];
@@ -615,7 +592,7 @@ var render = function render() {
         name: "admin"
       }
     }
-  }, [_vm._v("\n\t\t\t\t\tАдминка\n\t\t\t\t")]) : _vm._e(), _vm._v("\n                " + _vm._s(_vm.user.name) + "\n                "), _c("a", {
+  }, [_vm._v("\n                Админка\n            ")]) : _vm._e(), _vm._v("\n            " + _vm._s(_vm.user.name) + "\n            "), _c("a", {
     staticClass: "small mx-2",
     attrs: {
       href: "#"

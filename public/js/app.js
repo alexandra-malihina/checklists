@@ -5278,20 +5278,13 @@ __webpack_require__.r(__webpack_exports__);
       message_count: 0
     };
   },
-  // emits: ['setUser'],
   methods: {
     onSetUser: function onSetUser() {
       var _this = this;
 
-      // this.setLoading(true)
       axios.get("/api/user").then(function (res) {
-        console.log(res.data.data);
-        _this.user = res.data.data; // this.setLoading(false)
-      }); //             axios.post("/admin").then((res) => {
-      //     // console.log(res);
-      //     // this.user = res.data
-      // 	// this.setLoading(false)
-      // });
+        _this.user = res.data.data;
+      });
     },
     setLoading: function setLoading(is_loading) {
       this.is_loading = is_loading;
@@ -5315,8 +5308,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    console.log(this.$route.name);
-
     if (this.$route.name !== "user.login" && this.$route.name !== "user.register") {
       this.onSetUser();
     }
@@ -5375,17 +5366,16 @@ __webpack_require__.r(__webpack_exports__);
           email: _this.email,
           password: _this.password
         }).then(function (r) {
-          localStorage.setItem('x_xsrf_token', r.config.headers['X-XSRF-TOKEN']);
+          localStorage.setItem("x_xsrf_token", r.config.headers["X-XSRF-TOKEN"]);
 
-          _this.$emit('set-user');
+          _this.$emit("set-user");
 
           _this.$router.push({
-            name: 'checklists'
+            name: "checklists"
           });
         })["catch"](function (e) {
           var data = e.response.data;
-          console.log(data);
-          var message = '';
+          var message = "";
 
           if (data.errors.email) {
             _this.errors.email = 1;
@@ -5397,7 +5387,7 @@ __webpack_require__.r(__webpack_exports__);
             message += data.errors.password;
           }
 
-          _this.$emit('set-message', message, true);
+          _this.$emit("set-message", message, true);
         });
       });
     }
@@ -5444,7 +5434,7 @@ var render = function render() {
       "alert-danger": _vm.error,
       "alert-success": !_vm.error
     }
-  }, [_vm._v("\n\t\t\t" + _vm._s(_vm.message) + "\n\t\t")]) : _vm._e()], 1);
+  }, [_vm._v("\n        " + _vm._s(_vm.message) + "\n    ")]) : _vm._e()], 1);
 };
 
 var staticRenderFns = [];
@@ -5536,7 +5526,7 @@ var render = function render() {
         return _vm.login.apply(null, arguments);
       }
     }
-  }), _vm._v(" "), _c("p", [_vm._v("Нет учетной записи? "), _c("router-link", {
+  }), _vm._v(" "), _c("p", [_vm._v("\n        Нет учетной записи?\n        "), _c("router-link", {
     attrs: {
       to: {
         name: "user.register"

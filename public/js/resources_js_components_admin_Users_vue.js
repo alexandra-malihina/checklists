@@ -38,7 +38,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     updateUser: function updateUser(index) {
       var _this = this;
 
-      console.log(this.user_actions);
       var user = this.users[index];
       this.setLoading(true);
       axios.put("/api/admin/users/" + user.id, {
@@ -48,10 +47,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         _this.setLoading(false);
 
-        console.log(res.data);
-
-        _this.setMessage(res.data.message, res.data.error); // console.log(this.$ref)
-
+        _this.setMessage(res.data.message, res.data.error);
       });
     },
     checkListMax: function checkListMax(index) {
@@ -76,22 +72,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.get("/api/admin/users?page=" + this.current_page).then(function (res) {
         _this2.setLoading(false);
 
-        console.log(res.data);
         _this2.users = res.data.data;
         _this2.last_page = res.data.last_page;
-        _this2.current_page = res.data.current_page; // console.log(this.$ref)
+        _this2.current_page = res.data.current_page;
 
         _this2.$refs.pagination_ref.setPagination(_this2.current_page, _this2.last_page);
 
         _this2.can_edit_users = res.data.can_edit_users;
         _this2.can_edit_roles = res.data.can_edit_roles;
-        _this2.can_view_checklists = res.data.can_view_checklists; // this.actions = res.data
-        // this.setLoading(false)
-      }); //             axios.post("/admin").then((res) => {
-      //     // console.log(res);
-      //     // this.user = res.data
-      // 	// this.setLoading(false)
-      // });
+        _this2.can_view_checklists = res.data.can_view_checklists;
+      });
     },
     setCurrentPage: function setCurrentPage(current_page) {
       if (current_page === this.current_page) {
@@ -112,7 +102,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.getUsers();
-    console.log(this, this.user_actions, 'user_actions');
   }
 });
 
@@ -134,8 +123,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     CheckListItem: _CheckListItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['check_list_info', 'index', 'can_edit'],
-  name: 'check-list',
+  props: ["check_list_info", "index", "can_edit"],
+  name: "check-list",
   data: function data() {
     return {
       new_item: null,
@@ -145,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.check_block_id = 'check_' + this.check_list_info.id;
+    this.check_block_id = "check_" + this.check_list_info.id;
   },
   methods: {
     setMessage: function setMessage(message, error) {
@@ -166,18 +155,16 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios["delete"]('/api/check-lists/' + this.check_list_info.id).then(function (r) {
-        _this.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios["delete"]("/api/check-lists/" + this.check_list_info.id).then(function (r) {
+        _this.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this.$emit('set-message', data.message, data.error);
+        _this.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
-          // this.$destroy();
-          // this.$el.parentNode.removeChild(this.$el);
-          _this.$emit('remove', _this.index);
+          _this.$emit("remove", _this.index);
         }
       });
     },
@@ -191,31 +178,26 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios.get("/api/check-lists/" + this.check_list_info.id + '/items').then(function (r) {
-        console.log(r);
-
-        _this2.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios.get("/api/check-lists/" + this.check_list_info.id + "/items").then(function (r) {
+        _this2.$emit("set-loading", false);
 
         _this2.items = r.data;
         _this2.is_load_items = true;
-        console.log(_this2.items);
       });
     },
     addNewCheckListItem: function addNewCheckListItem() {
       var _this3 = this;
 
-      this.$emit('set-loading', true);
-      axios.post("/api/check-lists/" + this.check_list_info.id + '/items', {
+      this.$emit("set-loading", true);
+      axios.post("/api/check-lists/" + this.check_list_info.id + "/items", {
         name: this.new_item
       }).then(function (r) {
-        console.log(r);
-
-        _this3.$emit('set-loading', false);
+        _this3.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this3.$emit('set-message', data.message, data.error);
+        _this3.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
           _this3.new_item = null;
@@ -254,18 +236,16 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      this.$emit('set-loading', true);
-      axios["delete"]('/api/check-lists/' + this.item.check_list_id + '/items/' + this.item.id).then(function (r) {
-        _this.$emit('set-loading', false);
+      this.$emit("set-loading", true);
+      axios["delete"]("/api/check-lists/" + this.item.check_list_id + "/items/" + this.item.id).then(function (r) {
+        _this.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this.$emit('set-message', data.message, data.error);
+        _this.$emit("set-message", data.message, data.error);
 
         if (!data.error) {
-          // this.$destroy();
-          // this.$el.parentNode.removeChild(this.$el);
-          _this.$emit('remove', _this.index);
+          _this.$emit("remove", _this.index);
 
           _this.$emit("set-done", data.data.check_list.is_done);
         }
@@ -278,18 +258,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("/api/check-lists/" + this.item.check_list_id + "/items/" + this.item.id, {
         is_done: this.item.is_done
       }).then(function (r) {
-        // console.log(r);
         _this2.$emit("set-loading", false);
 
         var data = r.data;
 
-        _this2.$emit('set-message', data.message, data.error);
+        _this2.$emit("set-message", data.message, data.error);
 
         _this2.items = data;
         _this2.is_load_items = true;
 
-        _this2.$emit("set-done", data.data.check_list.is_done); // console.log(this.items)
-
+        _this2.$emit("set-done", data.data.check_list.is_done);
       });
     }
   }
@@ -309,7 +287,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "pagination",
-  // props: ['last_page', 'current_page'],
   data: function data() {
     return {
       pages: [1],
@@ -333,7 +310,6 @@ __webpack_require__.r(__webpack_exports__);
     setPagination: function setPagination(current_page, last_page) {
       this.current_page = current_page;
       this.last_page = last_page;
-      console.log("pp");
       this.pages = [];
 
       if (this.last_page <= 10) {
@@ -361,8 +337,7 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var _i2 = current_page - 1; _i2 <= this.last_page; _i2++) {
           this.pages.push(_i2);
-        } // this.pages.push(last_page)
-
+        }
 
         return false;
       }
@@ -377,9 +352,6 @@ __webpack_require__.r(__webpack_exports__);
       this.pages.push(last_page);
       return false;
     }
-  },
-  updated: function updated() {
-    console.log("u");
   }
 });
 
@@ -434,7 +406,7 @@ var render = function render() {
       staticClass: "form-control",
       staticStyle: {
         width: "100px",
-        flex: "none!important"
+        flex: "none !important"
       },
       attrs: {
         type: "number",
@@ -550,7 +522,7 @@ var render = function render() {
         "aria-expanded": "false",
         "aria-controls": "check_" + user.id
       }
-    }, [_vm._v("\n\t\t\t\tЧек-листы\n\t\t\t")]) : _vm._e()]), _vm._v(" "), _vm.can_view_checklists ? _c("div", {
+    }, [_vm._v("\n                Чек-листы\n            ")]) : _vm._e()]), _vm._v(" "), _vm.can_view_checklists ? _c("div", {
       staticClass: "p-3 accordion w-100 collapse",
       attrs: {
         id: "check_" + user.id
@@ -622,9 +594,9 @@ var render = function render() {
       "aria-expanded": "false",
       "aria-controls": "collapse_" + _vm.check_block_id
     }
-  }, [_vm._v("\r\n\t\t" + _vm._s(_vm.check_list_info.name) + " \r\n\t\t"), _vm.check_list_info.is_done ? _c("span", {
+  }, [_vm._v("\n            " + _vm._s(_vm.check_list_info.name) + "\n            "), _vm.check_list_info.is_done ? _c("span", {
     staticClass: "ms-3 badge bg-success"
-  }, [_vm._v(" Выполнен")]) : _c("span", {
+  }, [_vm._v("\n                Выполнен")]) : _c("span", {
     staticClass: "ms-3 badge bg-secondary"
   }, [_vm._v(" Не выполнен")])])]), _vm._v(" "), _c("div", {
     staticClass: "accordion-collapse collapse",
@@ -669,7 +641,7 @@ var render = function render() {
     on: {
       click: _vm.addNewCheckListItem
     }
-  }, [_vm._v("\r\n\t\t\t\t\t\tДобавить\r\n\t\t\t\t\t")])])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
+  }, [_vm._v("\n                            Добавить\n                        ")])])]) : _vm._e(), _vm._v(" "), _vm._l(_vm.items, function (item, index) {
     return _c("CheckListItem", {
       key: item.id,
       attrs: {
@@ -689,7 +661,7 @@ var render = function render() {
     on: {
       click: _vm.deleteCheckList
     }
-  }, [_vm._v("\r\n\t\t\t\tУдалить список\r\n\t\t\t")]) : _vm._e()], 2)])])]);
+  }, [_vm._v("\n                    Удалить список\n                ")]) : _vm._e()], 2)])])]);
 };
 
 var staticRenderFns = [];

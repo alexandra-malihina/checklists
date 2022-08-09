@@ -66,7 +66,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/sanctum/csrf-cookie").then(function (response) {
-        // Login...
         axios.post("/register", {
           email: _this.email,
           name: _this.name,
@@ -81,11 +80,11 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (e) {
           var data = e.response.data;
           console.log(data);
-          var message = '';
+          var message = "";
 
           if (data.errors.email) {
             _this.errors.email = 1;
-            message += data.errors.email + ' ';
+            message += data.errors.email + " ";
           }
 
           if (data.errors.password) {
@@ -94,7 +93,7 @@ __webpack_require__.r(__webpack_exports__);
             message += data.errors.password;
           }
 
-          _this.$emit('set-message', message, true);
+          _this.$emit("set-message", message, true);
         });
       });
     }
@@ -238,7 +237,7 @@ var render = function render() {
         return _vm.register.apply(null, arguments);
       }
     }
-  }), _vm._v(" "), _c("p", [_vm._v("\n            Есть учетная запись?\n            "), _c("router-link", {
+  }), _vm._v(" "), _c("p", [_vm._v("\n        Есть учетная запись?\n        "), _c("router-link", {
     attrs: {
       to: {
         name: "user.login"

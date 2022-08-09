@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\UserHelper;
 use App\Models\Action;
 use App\Models\Entity;
 use App\Models\User;
 use App\Models\UserAction;
-use Faker\Provider\UserAgent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -44,11 +42,8 @@ class RoleController extends Controller
 				'name' => $user->name,
 				'actions' => $actions_struct
 			];
-			// $user->actions_input = $actions_struct;
 			foreach($user->actions as $action) {
 				$item['actions'][$action->action->code][$action->entity->code] = 1;
-				// return $user->actions_input[$action->action->code];
-				// $user->actions_input[$action->action->code][$action->entity->code] = 1;
 			}
 			$return_data['data'][] = $item;
 		}
@@ -113,7 +108,6 @@ class RoleController extends Controller
 			abort(403, 'У Вас нет прав для редактирования!');
 		}
 
-		// return $user;
 		$return_data = [
 			'error' => false,
 			'message' => '',
